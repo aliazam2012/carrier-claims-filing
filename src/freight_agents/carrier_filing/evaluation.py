@@ -27,6 +27,11 @@ from email.message import EmailMessage
 from pathlib import Path
 from typing import Any, Literal
 
+from freight_agents.claims_intake.domain import ClaimFields
+from freight_agents.evals.recording import RecordResult, record_cases, replay_model
+from freight_agents.integrations.http import CircuitBreaker, TokenBucket
+from freight_agents.llm import Model
+
 from freight_agents.carrier_filing.channels import (
     ApiChannel,
     EmailChannel,
@@ -34,10 +39,6 @@ from freight_agents.carrier_filing.channels import (
 )
 from freight_agents.carrier_filing.desk import FilingDesk, Stores, scripted_reply
 from freight_agents.carrier_filing.domain import carrier_for, from_claims_case
-from freight_agents.claims_intake.domain import ClaimFields
-from freight_agents.evals.recording import RecordResult, record_cases, replay_model
-from freight_agents.integrations.http import CircuitBreaker, TokenBucket
-from freight_agents.llm import Model
 
 START = dt.datetime(2026, 12, 1, 16, 0, tzinfo=dt.UTC)  # 10:00 in Memphis
 DAYS = 200

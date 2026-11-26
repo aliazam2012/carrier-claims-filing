@@ -13,13 +13,14 @@ from typing import Any
 from freight_agents.agentcore.guards import cap_size
 from freight_agents.agentcore.hooks import HookContext
 from freight_agents.agentcore.tools import Risk, Tool, ToolRegistry, strict_schema, tool
-from freight_agents.carrier_filing.deadlines import deadlines
-from freight_agents.carrier_filing.desk import FilingDesk
 from freight_agents.claims_intake.rules import claim_rules
 from freight_agents.knowledge.index import Bm25Index, SearchIn, search_tool
 from freight_agents.llm import ToolSpec
 from freight_agents.mcp.bridge import Route, RouteError, build_server
 from pydantic import BaseModel
+
+from freight_agents.carrier_filing.deadlines import deadlines
+from freight_agents.carrier_filing.desk import FilingDesk
 
 INSTRUCTIONS = (
     "Freight claims filed with carriers. Read a claim, its 49 CFR 370 deadlines and the sends "

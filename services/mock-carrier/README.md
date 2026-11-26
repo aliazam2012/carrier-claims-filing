@@ -1,6 +1,6 @@
 # mock-carrier
 
-A made-up carrier claims service for carrier-filing: a JSON API with Idempotency-Key semantics (shared with the mock TMS through [mock-kit](../mock-kit/)) and a server-rendered portal. The [OpenAPI file](openapi.json) covers the API and is checked by a test.
+A made-up carrier claims service for carrier-filing: a JSON API with Idempotency-Key semantics (shared with the mock TMS through [mock-kit](https://github.com/aliazam2012/agent-runtime/tree/main/services/mock-kit)) and a server-rendered portal. The [OpenAPI file](openapi.json) covers the API and is checked by a test.
 
 ## Table of Contents
 

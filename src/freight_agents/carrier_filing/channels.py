@@ -19,11 +19,12 @@ from email import message_from_bytes
 from pathlib import Path
 from typing import Any, Literal, Protocol
 
-from freight_agents.carrier_filing.domain import Carrier, ClaimPacket, FilingReceipt
-from freight_agents.carrier_filing.packet import cover_letter
 from freight_agents.integrations.http import HttpClient, ResilientHttp
 from freight_agents.integrations.transport import Transport
 from pydantic import BaseModel
+
+from freight_agents.carrier_filing.domain import Carrier, ClaimPacket, FilingReceipt
+from freight_agents.carrier_filing.packet import cover_letter
 
 Clock = Callable[[], dt.datetime]
 

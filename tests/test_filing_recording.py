@@ -3,6 +3,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from freight_agents.evals.recording import StaleCassette
+from freight_agents.llm import Message, Model, ModelTurn, ScriptedModel, ToolSpec, Usage
+
 from freight_agents.carrier_filing.desk import scripted_reply
 from freight_agents.carrier_filing.evaluation import (
     FLOORS,
@@ -12,8 +15,6 @@ from freight_agents.carrier_filing.evaluation import (
     run_recorded,
     write_report,
 )
-from freight_agents.evals.recording import StaleCassette
-from freight_agents.llm import Message, Model, ModelTurn, ScriptedModel, ToolSpec, Usage
 
 
 class Capturing:

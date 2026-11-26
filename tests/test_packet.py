@@ -2,6 +2,8 @@ import datetime as dt
 from pathlib import Path
 
 import pytest
+from freight_agents.claims_intake.domain import ClaimFields
+
 from freight_agents.carrier_filing.domain import (
     CARRIERS,
     ClaimPacket,
@@ -9,7 +11,6 @@ from freight_agents.carrier_filing.domain import (
     from_claims_case,
 )
 from freight_agents.carrier_filing.packet import cover_letter, write_cover_letter
-from freight_agents.claims_intake.domain import ClaimFields
 
 FIELDS = ClaimFields(
     pro_number="7741-2209",

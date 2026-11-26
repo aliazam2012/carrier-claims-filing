@@ -6,6 +6,11 @@ from typing import Any
 import httpx
 import pytest
 from fastapi.testclient import TestClient
+from freight_agents.claims_intake.domain import ClaimFields
+from freight_agents.integrations.http import CircuitBreaker
+from freight_agents.integrations.transport import FileTransport
+from freight_agents.mock_carrier.app import PORTAL_PASSWORD, PORTAL_USER, create_app
+
 from freight_agents.carrier_filing.channels import (
     ApiChannel,
     EmailChannel,
@@ -13,10 +18,6 @@ from freight_agents.carrier_filing.channels import (
     PortalError,
 )
 from freight_agents.carrier_filing.domain import carrier_for, from_claims_case
-from freight_agents.claims_intake.domain import ClaimFields
-from freight_agents.integrations.http import CircuitBreaker
-from freight_agents.integrations.transport import FileTransport
-from freight_agents.mock_carrier.app import PORTAL_PASSWORD, PORTAL_USER, create_app
 
 from .conftest import Clock, Served
 

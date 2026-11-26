@@ -5,10 +5,11 @@ from typing import Any
 
 import anyio
 import pytest
-from freight_agents.carrier_filing.cli import main
-from freight_agents.carrier_filing.mcp_server import build_filing_server
 from freight_agents.claims_intake.workflow import Stores as ClaimsStores
 from mcp import Client
+
+from freight_agents.carrier_filing.cli import main
+from freight_agents.carrier_filing.mcp_server import build_filing_server
 
 from .conftest import FIELDS, Desk, claims_case
 

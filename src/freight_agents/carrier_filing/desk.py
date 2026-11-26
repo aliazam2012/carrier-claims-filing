@@ -29,11 +29,6 @@ from freight_agents.agentcore.guards import (
 from freight_agents.agentcore.hooks import ALLOW, Decision, Deny, HookContext, ToolOutcome, run_tool
 from freight_agents.agentcore.taint import TaintSet
 from freight_agents.agentcore.tools import Risk, Tool, ToolRegistry, tool
-from freight_agents.carrier_filing.channels import CarrierStatus, EmailChannel
-from freight_agents.carrier_filing.deadlines import schedule_deadlines, schedule_status
-from freight_agents.carrier_filing.domain import ClaimPacket, FilingReceipt, from_claims_case
-from freight_agents.carrier_filing.machine import FILING_MACHINE, POLICY
-from freight_agents.carrier_filing.packet import write_cover_letter
 from freight_agents.integrations.email import parse_eml
 from freight_agents.integrations.transport import FileTransport, Transport
 from freight_agents.llm import Model, ModelTurn, ScriptedModel, TextPart, ToolCall, Usage
@@ -41,6 +36,12 @@ from freight_agents.statecore.engine import CaseEngine
 from freight_agents.statecore.machine import CaseView
 from freight_agents.statecore.store import SqliteEventStore
 from pydantic import BaseModel
+
+from freight_agents.carrier_filing.channels import CarrierStatus, EmailChannel
+from freight_agents.carrier_filing.deadlines import schedule_deadlines, schedule_status
+from freight_agents.carrier_filing.domain import ClaimPacket, FilingReceipt, from_claims_case
+from freight_agents.carrier_filing.machine import FILING_MACHINE, POLICY
+from freight_agents.carrier_filing.packet import write_cover_letter
 
 CLAIMANT_ZONE = "America/Chicago"  # the made-up claimant's office, in Memphis
 Clock = Callable[[], dt.datetime]

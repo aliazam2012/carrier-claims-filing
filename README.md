@@ -1,6 +1,13 @@
-# carrier-filing
+# carrier-claims-filing
 
-A complete freight claim, handed off by claims-intake, is filed with the carrier exactly once through that carrier's channel (a REST API, a web portal, or email), and the carrier is held to its 49 CFR 370.5 acknowledgement and 370.9 disposition deadlines with reminders that fire once and follow-ups a person approves.
+[![CI](https://github.com/aliazam2012/carrier-claims-filing/actions/workflows/ci.yml/badge.svg)](https://github.com/aliazam2012/carrier-claims-filing/actions/workflows/ci.yml)
+![Evaluation gate](https://img.shields.io/badge/evaluation%20gate-34%20claims-brightgreen)
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
+![License MIT](https://img.shields.io/badge/license-MIT-green)
+
+**An agent that files freight claims with carriers exactly once, through each carrier's REST API, web portal (headless browser) or email, and holds the carrier to its legal deadlines with follow-ups a person approves.**
+
+**Skills shown:** API integration with idempotency keys · browser automation with Playwright · an email channel · durable timers for the 49 CFR 370.5 and 370.9 deadlines · exactly once through crashes and lost replies · human approval of every outbound message · prompt-injection defense on carrier replies · evaluation of 34 claims over 200 days
 
 ## Table of Contents
 
@@ -9,6 +16,7 @@ A complete freight claim, handed off by claims-intake, is filed with the carrier
 - [Run It](#run-it)
 - [Guards](#guards)
 - [Limits](#limits)
+- [Where It Fits](#where-it-fits)
 
 ---
 
@@ -37,12 +45,12 @@ Channels, timers and guards are real, including the portal in headless Chromium.
 | Deadlines | `deadlines.py`, `machine.py` | Acknowledgement due 30 days and disposition 120 days after receipt, then status every 60 days; reminders at 09:00 claimant time on the first late day |
 | Desk | `desk.py` | Files, fires reminders, drafts follow-ups that cite the rule, checks status, and reads carrier replies through one model tool |
 
-[ADR-0011](../../docs/adr/ADR-0011-one-filing-per-channel.md) explains one filing per channel; [ADR-0012](../../docs/adr/ADR-0012-durable-deadlines.md) explains the deadlines.
+[ADR-0011](docs/adr/ADR-0011-one-filing-per-channel.md) explains one filing per channel; [ADR-0012](docs/adr/ADR-0012-durable-deadlines.md) explains the deadlines.
 
 ## Run It
 
 ```bash
-uv run freight-claims run --inbox data/demo/inbox --tms data/demo/tms.json    # claims-intake first
+# claims arrive from claims-intake-agent's state (var/claims); see that repo's demo
 uv run freight-filing from-claims          # file every claim it handed off
 uv run freight-filing pending              # claim emails and follow-ups waiting for a person
 uv run freight-filing approve <approval-id> --by dana
@@ -52,7 +60,7 @@ uv run freight-filing eval                 # the 34 scenarios
 uv run freight-filing mcp                  # read tools over MCP on stdio
 ```
 
-The made-up carriers run in process: [mock-carrier](../../services/mock-carrier/) serves the API and, for the browser, the portal. The portal channel needs the headless browser once: `uv run playwright install --only-shell chromium`.
+The made-up carriers run in process: [mock-carrier](services/mock-carrier/) serves the API and, for the browser, the portal. The portal channel needs the headless browser once: `uv run playwright install --only-shell chromium`.
 
 ## Guards
 
@@ -70,3 +78,7 @@ The made-up carriers run in process: [mock-carrier](../../services/mock-carrier/
 - Carriers, claimants and the portal are made up; the portal login is a demo credential in the mock's source.
 - Email filing cannot tell a delivered claim from a sent one; the 30-day reminder is the backstop.
 - The model reads carrier replies in reference mode until a live run is recorded ([issue #10](https://github.com/aliazam2012/freight-agents/issues/10)).
+
+## Where It Fits
+
+Part of a family of freight agents on one [agent runtime](https://github.com/aliazam2012/agent-runtime). Complete claims arrive from [claims-intake-agent](https://github.com/aliazam2012/claims-intake-agent), damage claims after [vision-damage-assessor](https://github.com/aliazam2012/vision-damage-assessor) sets the amount.

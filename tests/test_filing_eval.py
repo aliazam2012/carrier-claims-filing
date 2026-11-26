@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+
 from freight_agents.carrier_filing import channels
 from freight_agents.carrier_filing.evaluation import FLOORS, run, scenarios, write_report
 

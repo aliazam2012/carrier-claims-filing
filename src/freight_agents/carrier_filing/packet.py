@@ -9,9 +9,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from freight_agents.carrier_filing.domain import ClaimPacket
 from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfgen import canvas
+
+from freight_agents.carrier_filing.domain import ClaimPacket
 
 
 def cover_letter(packet: ClaimPacket) -> str:

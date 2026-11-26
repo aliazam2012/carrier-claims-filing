@@ -9,11 +9,12 @@ from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import Any
 
+from freight_agents.integrations.http import CircuitBreaker, TokenBucket
+from freight_agents.llm import Model
+
 from freight_agents.carrier_filing.channels import ApiChannel, EmailChannel, PortalChannel
 from freight_agents.carrier_filing.desk import FilingDesk, Stores
 from freight_agents.carrier_filing.domain import carrier_for
-from freight_agents.integrations.http import CircuitBreaker, TokenBucket
-from freight_agents.llm import Model
 
 DEFAULT_STATE = Path("var/filing")
 DEFAULT_CLAIMS = Path("var/claims")
@@ -109,14 +110,12 @@ def main(argv: list[str] | None = None) -> int:
     show.add_argument("case_id")
     commands.add_parser("mcp", help="serve the read tools over MCP on stdio")
     evaluate = commands.add_parser("eval", help="play every scenario and grade it")
-    evaluate.add_argument("--reports", type=Path, default=Path("apps/carrier-filing/evals/reports"))
+    evaluate.add_argument("--reports", type=Path, default=Path("evals/reports"))
     evaluate.add_argument("--day", default=dt.date.today().isoformat())
     evaluate.add_argument(
         "--mode", choices=["reference", "recorded", "record"], default="reference"
     )
-    evaluate.add_argument(
-        "--cassettes", type=Path, default=Path("apps/carrier-filing/evals/cassettes")
-    )
+    evaluate.add_argument("--cassettes", type=Path, default=Path("evals/cassettes"))
     evaluate.add_argument("--model-name", default="claude-opus-5-5")
     evaluate.add_argument("--max-usd", type=float, default=0.0, help="record: the approved cap")
     evaluate.add_argument("--limit", type=int, help="record: only the first N scenarios")
@@ -172,6 +171,8 @@ def _run(args: argparse.Namespace, desk: FilingDesk, stores: Stores) -> int:
 
 
 def _evaluate(args: argparse.Namespace) -> int:
+    from freight_agents.evals.recording import StaleCassette
+
     from freight_agents.carrier_filing.evaluation import (
         FLOORS,
         record,
@@ -179,7 +180,6 @@ def _evaluate(args: argparse.Namespace) -> int:
         run_recorded,
         write_report,
     )
-    from freight_agents.evals.recording import StaleCassette
 
     if args.mode == "record":
         from freight_agents.llm.anthropic_adapter import AnthropicModel
@@ -207,8 +207,9 @@ def _evaluate(args: argparse.Namespace) -> int:
 
 def _serve(desk: FilingDesk) -> int:
     import anyio
-    from freight_agents.carrier_filing.mcp_server import build_filing_server
     from mcp.server.stdio import stdio_server
+
+    from freight_agents.carrier_filing.mcp_server import build_filing_server
 
     server = build_filing_server(desk)
 

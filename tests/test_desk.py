@@ -6,10 +6,11 @@ from typing import Any
 
 import pytest
 from freight_agents.agentcore.hooks import run_tool
-from freight_agents.carrier_filing.desk import scripted_reply
 from freight_agents.integrations.http import Unavailable
 from freight_agents.llm import ToolCall
 from freight_agents.mock_carrier.app import create_app
+
+from freight_agents.carrier_filing.desk import scripted_reply
 
 from .conftest import Clock, Desk, claims_case, serve
 

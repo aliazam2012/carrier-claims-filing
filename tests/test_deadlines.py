@@ -1,6 +1,9 @@
 import datetime as dt
 from pathlib import Path
 
+from freight_agents.statecore.engine import CaseEngine
+from freight_agents.statecore.store import SqliteEventStore
+
 from freight_agents.carrier_filing.deadlines import (
     ACK_DAYS,
     DISPOSITION_DAYS,
@@ -9,8 +12,6 @@ from freight_agents.carrier_filing.deadlines import (
     schedule_deadlines,
 )
 from freight_agents.carrier_filing.machine import FILING_MACHINE
-from freight_agents.statecore.engine import CaseEngine
-from freight_agents.statecore.store import SqliteEventStore
 
 from .conftest import Clock
 
